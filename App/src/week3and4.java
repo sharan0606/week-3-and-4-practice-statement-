@@ -1,1 +1,51 @@
-import java.util.*;class Transaction {    String id;    double fee;    String ts;    Transaction(String id, double fee, String ts) {        this.id = id;        this.fee = fee;        this.ts = ts;    }    public String toString() {        return id + ":" + fee + "@" + ts;    }}public class week3and4 {    public static void main(String[] args) {        List<Transaction> list = new ArrayList<>();        list.add(new Transaction("id1", 10.5, "10:00"));        list.add(new Transaction("id2", 25.0, "09:30"));        list.add(new Transaction("id3", 5.0, "10:15"));        // Bubble Sort        for (int i = 0; i < list.size() - 1; i++) {            for (int j = 0; j < list.size() - i - 1; j++) {                if (list.get(j).fee > list.get(j + 1).fee) {                    Collections.swap(list, j, j + 1);                }            }        }        System.out.println("Bubble Sort: " + list);        // Insertion Sort        for (int i = 1; i < list.size(); i++) {            Transaction key = list.get(i);            int j = i - 1;            while (j >= 0 &&                    (list.get(j).fee > key.fee ||                            (list.get(j).fee == key.fee &&                                    list.get(j).ts.compareTo(key.ts) > 0))) {                list.set(j + 1, list.get(j));                j--;            }            list.set(j + 1, key);        }        System.out.println("Insertion Sort: " + list);        // High fee        System.out.print("High Fee (>50): ");        for (Transaction t : list) {            if (t.fee > 50) System.out.print(t + " ");        }    }}
+import java.util.*;
+
+class Client {
+    String name;
+    int risk;
+
+    Client(String n, int r) {
+        name = n;
+        risk = r;
+    }
+
+    public String toString() {
+        return name + ":" + risk;
+    }
+}
+
+public class ClientRiskRanking {
+    public static void main(String[] args) {
+
+        Client[] arr = {
+            new Client("A",20),
+            new Client("B",50),
+            new Client("C",80)
+        };
+
+        // Bubble
+        for (int i = 0; i < arr.length-1; i++) {
+            for (int j = 0; j < arr.length-i-1; j++) {
+                if (arr[j].risk > arr[j+1].risk) {
+                    Client temp = arr[j];
+                    arr[j] = arr[j+1];
+                    arr[j+1] = temp;
+                }
+            }
+        }
+        System.out.println(Arrays.toString(arr));
+
+        // Insertion DESC
+        for (int i = 1; i < arr.length; i++) {
+            Client key = arr[i];
+            int j = i-1;
+
+            while (j>=0 && arr[j].risk < key.risk) {
+                arr[j+1] = arr[j];
+                j--;
+            }
+            arr[j+1] = key;
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+}
